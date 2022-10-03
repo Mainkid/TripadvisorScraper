@@ -45,7 +45,7 @@ def ScrapUserCities(url):
     return [cities]
 
 def ScrapUser(url):
-    driver = webdriver.Remote("http://127.0.0.1:4444/wd/hub",desired_capabilities=DesiredCapabilities.CHROME)
+    driver = webdriver.Remote("http://selenium:4444/wd/hub",desired_capabilities=DesiredCapabilities.CHROME)
     driver.set_window_size(1024, 600)
     driver.maximize_window()
     actions = ActionChains(driver)

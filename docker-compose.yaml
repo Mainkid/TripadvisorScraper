@@ -1,4 +1,4 @@
-version: '3'
+version: '3.5'
 services:
   selenium:
     image: selenium/standalone-chrome:97.0.4692.99-chromedriver-97.0.4692.71

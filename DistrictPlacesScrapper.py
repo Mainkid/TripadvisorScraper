@@ -32,7 +32,7 @@ def init_csv(filename):
     csvFile.close()
 
 def RestarauntScrap(url):
-    driver = webdriver.Remote("http://127.0.0.1:4444/wd/hub", desired_capabilities=DesiredCapabilities.CHROME)
+    driver = webdriver.Remote("http://selenium:4444/wd/hub", desired_capabilities=DesiredCapabilities.CHROME)
     driver.set_window_size(1024, 600)
     driver.maximize_window()
     driver.get(url)
@@ -55,7 +55,7 @@ def RestarauntScrap(url):
     driver.quit()
 
 def LocationScrap(url):
-    driver = webdriver.Remote("http://127.0.0.1:4444/wd/hub", desired_capabilities=DesiredCapabilities.CHROME)
+    driver = webdriver.Remote("http://selenium:4444/wd/hub", desired_capabilities=DesiredCapabilities.CHROME)
     driver.set_window_size(1024, 600)
     driver.maximize_window()
     driver.get(url)
@@ -77,7 +77,7 @@ def LocationScrap(url):
     driver.quit()
 
 def HotelScrap(url):
-    driver = webdriver.Remote("http://127.0.0.1:4444/wd/hub", desired_capabilities=DesiredCapabilities.CHROME)
+    driver = webdriver.Remote("http://selenium:4444/wd/hub", desired_capabilities=DesiredCapabilities.CHROME)
     driver.set_window_size(1024, 600)
     driver.maximize_window()
     driver.get(url)
