@@ -1,70 +1,97 @@
 import sys
 import csv
+
+import webdriver_manager.chrome
 from selenium import webdriver
 from selenium.webdriver.common.action_chains import ActionChains
-
+from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
+from UserScrapper import ScrapUser
 from webdriver_manager.chrome import ChromeDriverManager
 import time
 
 website_url_base = r"https://www.tripadvisor.ru/"
-path_to_file = "reviews.csv"
-num_page = 10
+path_to_file = "hotel.csv"
+num_page = 50
 sleep_time=2
 
 def ScrapHotel(url):
-    driver = webdriver.Chrome(ChromeDriverManager().install())
+    #driver = webdriver.Remote("http://127.0.0.1:4444/wd/hub", desired_capabilities=DesiredCapabilities.CHROME)
+    driver = webdriver.Remote("http://127.0.0.1:4444/wd/hub", desired_capabilities=DesiredCapabilities.CHROME)
     driver.set_window_size(1024, 600)
     driver.maximize_window()
     actions = ActionChains(driver)
     driver.get(url)
-
+    driver.implicitly_wait(sleep_time)
     # Open the file to save the review
-    csvFile = open(path_to_file, 'a', encoding="utf-8")
+    csvFile = open(path_to_file, 'a', encoding="utf-8",newline="")
     csvWriter = csv.writer(csvFile)
 
     location_name = driver.find_element("xpath","//*[@id='HEADING']").text
-    location_type = driver.find_element("xpath","//div[6]/div/div/div/div[1]/div[2]/div/a/span").text
-
+    #location_type = driver.find_element("xpath","//div[6]/div/div/div/div[1]/div[2]/div/a/span").text
+    location_type = "Отели"
     address = driver.find_element("xpath","//div[2]/div[1]/div/div[6]/div/div/div/div[2]/div/div[2]/div/div/div/span[2]/span").text
-
+    reviews_amount=driver.find_element("xpath","//*[@class='qqniT']").text.split(" ")[0]
     for i in range(0, num_page):
 
         # expand the review
         time.sleep(sleep_time)
 
-        container = driver.find_elements("xpath", "//section[7]/div/div/span/section/section/div[1]/div/div[5]/div")
+        container = driver.find_elements("xpath", '//*[@class="YibKl MC R2 Gi z Z BB pBbQr"]')
+        next_btn=container[0].find_element("xpath", ".//*[@class='Ignyf _S Z']")
+        try:
+            ActionChains(driver).move_to_element(next_btn).perform()
+        except:
+            print("Couldnt scroll!!!")
 
-        for j in range(len(container)-1):
-            title = container[j].find_element("xpath",".//span/div/div[3]").text
+        try:
+            next_btn.click()
+        except:
+            print("Couldnt click!")
+            continue
+        for j in range(0,len(container)):
+            title = container[j].find_element("xpath",".//*[@class='Qwuub']/span").text
+            #next_btn=container[j].find_element("xpath", ".//*[@class='Ignyf _S Z']")
+            #ActionChains(driver).move_to_element(next_btn).perform()
+            #try:
+                #ERROR!!!!
+
+            #except:
+                #pass
+                #print("Passed")
+            review = container[j].find_element("xpath", ".//*[@class='QewHA H4 _a']/span").text.replace("\n", " ")
+
             try:
-                container[j].find_element("xpath",".//span/div/div[5]/div[2]/button/span").click()
+                review_date = container[j].find_element("xpath",".//*[@class='cRVSd']/span").text.split(" ")
+                review_date = review_date[3]+" "+review_date[4]+" "+review_date[5]
             except:
-                pass
-            review = container[j].find_element("xpath", ".//span/div/div[5]/div[1]/div").text.replace("\n", " ")
-
-            try:
-                review_date = container[j].find_element("xpath",".//span/div/div[7]/div[1]").text
-            except:
-                review_date = container[j].find_element("xpath",".//span/div/div[8]/div[1]").text
-            rating = container[j].find_element("xpath",".//span/div/div[2]/*[name()='svg']").get_attribute("aria-label")
+                review_date = " "
+            rating = container[j].find_element("xpath",".//*[@class='Hlmiy F1']/span").get_attribute("class")[-2:-1]
 
 
             try:
-                review_likes = container[j].find_element("xpath",".//span/div/div[1]/div[2]/button/span/span").text
+                review_likes = container[j].find_element("xpath",".//*[@class='hVSKz S2 H2 Ch sJlxi']").text.split(" ")[0]
             except:
                 review_likes = 0
 
-
+            visiting_date = container[j].find_element("xpath",".//*[@class='teHYY _R Me S4 H3']").text.split(" ")
+            visiting_date = visiting_date[2] + " " +visiting_date[3] + " " +visiting_date[4]
             time.sleep(sleep_time)
 
 
-            profile_link =  container[j].find_element("xpath",".//span/div/div[1]/div[1]/div[2]/span/a").get_attribute("href")
-
+            profile_link =  container[j].find_element("xpath",".//*[@class='kjIqZ I ui_social_avatar inline']").get_attribute("href")
+            user_nickname = container[j].find_element("xpath",".//div[1]/div/div[2]/span/a").text
             user_data=ScrapUser(profile_link)
 
-            csvWriter.writerow([])
+            csvWriter.writerow(
+                [location_name, url, address, "Отели", "Отели", location_type, reviews_amount, title,
+                 review, "", rating,
+                 visiting_date, review_date,
+                 review_likes, user_nickname, profile_link] + user_data)
             print("OK")
             # change the page
-        driver.find_element("xpath",'//div[11]/div[1]/div/div[1]/div[2]/div/a').click()
 
-    driver.close()
+
+        driver.find_element("xpath","//*[@class='ui_button nav next primary ']").click()
+
+
+    driver.quit()

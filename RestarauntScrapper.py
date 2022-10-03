@@ -2,22 +2,20 @@ import sys
 import csv
 from selenium import webdriver
 from selenium.webdriver.common.action_chains import ActionChains
+from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
 from UserScrapper import ScrapUser
 from webdriver_manager.chrome import ChromeDriverManager
 import time
 
 
 website_url_base = r"https://www.tripadvisor.ru/"
-path_to_file = "reviews.csv"
-num_page = 10
+path_to_file = "restaraunt.csv"
+num_page = 100
 sleep_time=2
 
 def ScrapRestaraunt(url):
-
-
-
     # Import the webdriver
-    driver = webdriver.Chrome(ChromeDriverManager().install())
+    driver = webdriver.Remote("http://127.0.0.1:4444/wd/hub",desired_capabilities=DesiredCapabilities.CHROME)
     driver.set_window_size(1024, 600)
     driver.maximize_window()
     actions = ActionChains(driver)
@@ -44,18 +42,22 @@ def ScrapRestaraunt(url):
             rating = \
             container[j].find_element("xpath",".//span[contains(@class, 'ui_bubble_rating bubble_')]").get_attribute(
                 "class").split("_")[3]
+            rating=rating[0]
             review = container[j].find_element("xpath",".//p[@class='partial_entry']").text.replace("\n", " ")
 
             address = driver.find_element("xpath","//a[@href='#MAPVIEW']").text
 
-            reviews_amount = container[j].find_element("xpath",".//div/div/div/div[1]/div/div/div[2]/div/div/span").text
+            reviews_amount = container[j].find_element("xpath",".//div/div/div/div[1]/div/div/div[2]/div/div/span").text.split(" ")[0]
 
             try:
                 review_likes = container[j].find_element("xpath",".//div/div/div/div[2]/div[4]/div[2]/span[2]").text
             except:
                 review_likes = 0
 
-            visiting_date = container[j].find_element("xpath",".//div/div/div/div[2]/div[3]").text
+            visiting_date = container[j].find_element("xpath",".//div/div/div/div[2]/div[3]").text.split(" ")
+            if (visiting_date[0]==""):
+                visiting_date = container[j].find_element("xpath", ".//div/div/div/div[2]/div[4]").text.split(" ")
+            visiting_date = visiting_date[2]+" "+visiting_date[3]+" "+visiting_date[4]
 
             user_nickname = container[j].find_element("xpath",".//div/div/div/div[1]/div/div/div[1]/div[2]/div").text
             try:
@@ -73,14 +75,16 @@ def ScrapRestaraunt(url):
 
             user_data=ScrapUser(profile_link)
 
-            csvWriter.writerow([restaraunt_name,url,address,"Рестораны","","",reviews_amount,title,review,"tag",rating,visiting_date,review_date,
+            csvWriter.writerow([restaraunt_name,url,address,"Рестораны","Рестораны","Рестораны",reviews_amount,title,review,"",rating,visiting_date,review_date,
                                 review_likes,user_nickname,profile_link]+user_data)
 
             driver.find_element("xpath",("/html/body/span/div[4]")).click()
 
-            #actions.moveToElement(driver.findElement(By.xpath("element2"))).click().perform();
-            print("OK")
-            # change the page
-        driver.find_element("xpath",'.//a[@class="nav next ui_button primary"]').click()
 
-    driver.close()
+            print("OK")
+        try:
+            driver.find_element("xpath",'.//a[@class="nav next ui_button primary"]').click()
+        except:
+            print("End Of Page")
+            break
+    driver.quit()

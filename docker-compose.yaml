@@ -1,0 +1,22 @@
+version: '3'
+services:
+  selenium:
+    image: selenium/standalone-chrome:97.0.4692.99-chromedriver-97.0.4692.71
+    container_name: selenium
+    ports:
+      - 4444:4444
+    restart: always
+    shm_size: '1gb'
+    environment:
+      - SE_NODE_OVERRIDE_MAX_SESSIONS=true
+      - SE_NODE_MAX_SESSIONS=18
+  app:
+    build:
+      context: .
+      shm_size: '1gb'
+    volumes:
+      - ./:/usr/src/Scrapper/
+    depends_on:
+      - selenium
+    container_name: app
+
