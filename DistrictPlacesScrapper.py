@@ -36,9 +36,14 @@ def RestarauntScrap(url):
     driver.set_window_size(1024, 600)
     driver.maximize_window()
     driver.get(url)
+
     time.sleep(2)
     for i in range(0,num_page):
         print("Page "+ str(i))
+        html_content = driver.page_source
+        with open("Output.txt", "w") as text_file:
+            text_file.write(html_content)
+        print(html_content)
         q=driver.find_element("xpath","//div[@class='YtrWs']")
         q=q.find_elements("xpath",".//div[1]/div[2]/div[1]/div/span/a[@target='_blank']")
         for location in q:
