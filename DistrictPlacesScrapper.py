@@ -96,6 +96,7 @@ def HotelScrap(url):
     driver.quit()
 
 if __name__ == "__main__":
+    time.sleep(10)
     init_csv("restaraunt.csv")
     init_csv("hotel.csv")
     init_csv("location.csv")
