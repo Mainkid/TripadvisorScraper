@@ -10,6 +10,7 @@ services:
     environment:
       - SE_NODE_OVERRIDE_MAX_SESSIONS=true
       - SE_NODE_MAX_SESSIONS=18
+      - SE_NODE_SESSION_TIMEOUT=100000000
   app:
     build:
       context: .
