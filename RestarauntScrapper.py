@@ -13,14 +13,12 @@ path_to_file = "restaraunt.csv"
 num_page = 100
 sleep_time=2
 
-def ScrapRestaraunt(url):
+def ScrapRestaraunt(url,driver):
     # Import the webdriver
-    driver = webdriver.Remote("http://selenium:4444/wd/hub",desired_capabilities=DesiredCapabilities.CHROME)
+
     driver.set_window_size(1024, 600)
     driver.maximize_window()
-    actions = ActionChains(driver)
     driver.get(url)
-
     # Open the file to save the review
     csvFile = open(path_to_file, 'a', encoding="utf-8",newline='')
     csvWriter = csv.writer(csvFile)

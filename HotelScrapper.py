@@ -14,9 +14,9 @@ path_to_file = "hotel.csv"
 num_page = 50
 sleep_time=2
 
-def ScrapHotel(url):
+def ScrapHotel(url,driver):
     #driver = webdriver.Remote("http://127.0.0.1:4444/wd/hub", desired_capabilities=DesiredCapabilities.CHROME)
-    driver = webdriver.Remote("http://selenium:4444/wd/hub", desired_capabilities=DesiredCapabilities.CHROME)
+    #driver = webdriver.Remote("http://selenium:4444/wd/hub", desired_capabilities=DesiredCapabilities.CHROME)
     driver.set_window_size(1024, 600)
     driver.maximize_window()
     actions = ActionChains(driver)

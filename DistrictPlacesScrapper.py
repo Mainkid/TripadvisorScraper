@@ -37,21 +37,23 @@ def RestarauntScrap(url):
     driver.maximize_window()
     driver.get(url)
 
-    time.sleep(2)
+    time.sleep(3)
     for i in range(0,num_page):
         print("Page "+ str(i))
-        html_content = driver.page_source
-        with open("Output.txt", "w") as text_file:
-            text_file.write(html_content)
-        print(html_content)
+
+
         q=driver.find_element("xpath","//div[@class='YtrWs']")
         q=q.find_elements("xpath",".//div[1]/div[2]/div[1]/div/span/a[@target='_blank']")
         for location in q:
             _href_location=location.get_attribute("href")
             try:
-                ScrapRestaraunt(_href_location)
+                driver2 = webdriver.Remote("http://selenium:4444/wd/hub",
+                                           desired_capabilities=DesiredCapabilities.CHROME)
+                ScrapRestaraunt(_href_location,driver2)
             except:
-                print("Error!")
+                print("Error Restaraunt")
+                driver2.quit()
+
         try:
             driver.find_element("xpath",
                                 "//a[@class='nav next rndBtn ui_button primary taLnk']").click()
@@ -64,19 +66,22 @@ def LocationScrap(url):
     driver.set_window_size(1024, 600)
     driver.maximize_window()
     driver.get(url)
-    time.sleep(2)
+    time.sleep(3)
     for i in range(0, num_page):
         q=driver.find_elements("xpath",'//div/span/div/article/div[2]/header/div/div/a[1]')
         for location in q:
             _href_location = location.get_attribute("href")
             try:
-                ScrapLocation(_href_location)
+                driver2 = webdriver.Remote("http://selenium:4444/wd/hub",
+                                           desired_capabilities=DesiredCapabilities.CHROME)
+                ScrapLocation(_href_location,driver2)
             except:
-                print("Error!")
+                print("ERROR Location")
+                driver2.quit()
         try:
             driver.find_element("xpath",
                                 "//span/div/div[3]/div/div[2]/div[2]/span/div/div[3]/div/div[2]/div/div/section[40]/span/div[1]/div/div[1]/div[2]/div").click()
-            time.sleep(2)
+            time.sleep(3)
         except:
             print("End of list")
     driver.quit()
@@ -86,16 +91,22 @@ def HotelScrap(url):
     driver.set_window_size(1024, 600)
     driver.maximize_window()
     driver.get(url)
-    time.sleep(2)
+    time.sleep(3)
     for i in range(0, num_page):
         q = driver.find_elements("xpath", '//div/div[1]/div[2]/div[1]/div/div/a[1]')
         for location in q:
             _href_location = location.get_attribute("href")
-            ScrapHotel(_href_location)
+            driver2 = webdriver.Remote("http://selenium:4444/wd/hub",
+                                       desired_capabilities=DesiredCapabilities.CHROME)
+            try:
+                ScrapHotel(_href_location,driver2)
+            except:
+                print("ERROR hotel!")
+                driver2.quit()
         try:
             driver.find_element("xpath",
                                 "//span/div/div[3]/div/div[2]/div[2]/span/div/div[3]/div/div[2]/div/div/section[40]/span/div[1]/div/div[1]/div[2]/div").click()
-            time.sleep(2)
+            time.sleep(3)
         except:
             print("End of list")
     driver.quit()
@@ -120,4 +131,3 @@ if __name__ == "__main__":
     p_location.start()
     p_hotel.start()
     p_rest.join()
-    HotelScrap(url_hotel)
