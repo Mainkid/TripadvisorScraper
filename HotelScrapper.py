@@ -33,6 +33,7 @@ def ScrapHotel(url,driver):
     reviews_amount=driver.find_element("xpath","//*[@class='qqniT']").text.split(" ")[0]
     for i in range(0, num_page):
 
+
         # expand the review
         time.sleep(sleep_time)
 

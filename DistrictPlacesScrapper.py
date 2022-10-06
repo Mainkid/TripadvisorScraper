@@ -13,7 +13,9 @@ from LocationScrapper import ScrapLocation
 
 num_page = 100
 
-
+hotel_page=0
+restaraunt_page=0
+location_page=0
 
 
 
@@ -32,84 +34,43 @@ def init_csv(filename):
     csvFile.close()
 
 def RestarauntScrap(url):
-    driver = webdriver.Remote("http://selenium:4444/wd/hub", desired_capabilities=DesiredCapabilities.CHROME)
-    driver.set_window_size(1024, 600)
-    driver.maximize_window()
-    driver.get(url)
-
-    time.sleep(3)
-    for i in range(0,num_page):
-        print("Page "+ str(i))
-
-
-        q=driver.find_element("xpath","//div[@class='YtrWs']")
-        q=q.find_elements("xpath",".//div[1]/div[2]/div[1]/div/span/a[@target='_blank']")
-        for location in q:
-            _href_location=location.get_attribute("href")
-            try:
-                driver2 = webdriver.Remote("http://selenium:4444/wd/hub",
-                                           desired_capabilities=DesiredCapabilities.CHROME)
-                ScrapRestaraunt(_href_location,driver2)
-            except:
-                print("Error Restaraunt")
-                driver2.quit()
-
+    with open("Data_url/rest.txt") as file:
+        lines = file.readlines()
+    for link in lines:
         try:
-            driver.find_element("xpath",
-                                "//a[@class='nav next rndBtn ui_button primary taLnk']").click()
+            driver2 = webdriver.Remote("http://selenium:4444/wd/hub",
+                                        desired_capabilities=DesiredCapabilities.CHROME)
+            ScrapRestaraunt(link.replace("\n",''),driver2)
         except:
-            print("End of list")
-    driver.quit()
+            print("Error Restaraunt")
+            driver2.quit()
+
 
 def LocationScrap(url):
-    driver = webdriver.Remote("http://selenium:4444/wd/hub", desired_capabilities=DesiredCapabilities.CHROME)
-    driver.set_window_size(1024, 600)
-    driver.maximize_window()
-    driver.get(url)
-    time.sleep(3)
-    for i in range(0, num_page):
-        q=driver.find_elements("xpath",'//div/span/div/article/div[2]/header/div/div/a[1]')
-        for location in q:
-            _href_location = location.get_attribute("href")
-            try:
-                driver2 = webdriver.Remote("http://selenium:4444/wd/hub",
-                                           desired_capabilities=DesiredCapabilities.CHROME)
-                ScrapLocation(_href_location,driver2)
-            except:
-                print("ERROR Location")
-                driver2.quit()
+    with open("Data_url/loc.txt") as file:
+        lines = file.readlines()
+    for ref in lines:
         try:
-            driver.find_element("xpath",
-                                "//span/div/div[3]/div/div[2]/div[2]/span/div/div[3]/div/div[2]/div/div/section[40]/span/div[1]/div/div[1]/div[2]/div").click()
-            time.sleep(3)
-        except:
-            print("End of list")
-    driver.quit()
-
-def HotelScrap(url):
-    driver = webdriver.Remote("http://selenium:4444/wd/hub", desired_capabilities=DesiredCapabilities.CHROME)
-    driver.set_window_size(1024, 600)
-    driver.maximize_window()
-    driver.get(url)
-    time.sleep(3)
-    for i in range(0, num_page):
-        q = driver.find_elements("xpath", '//div/div[1]/div[2]/div[1]/div/div/a[1]')
-        for location in q:
-            _href_location = location.get_attribute("href")
             driver2 = webdriver.Remote("http://selenium:4444/wd/hub",
                                        desired_capabilities=DesiredCapabilities.CHROME)
-            try:
-                ScrapHotel(_href_location,driver2)
-            except:
-                print("ERROR hotel!")
-                driver2.quit()
-        try:
-            driver.find_element("xpath",
-                                "//span/div/div[3]/div/div[2]/div[2]/span/div/div[3]/div/div[2]/div/div/section[40]/span/div[1]/div/div[1]/div[2]/div").click()
-            time.sleep(3)
+            ScrapLocation(ref.replace("\n",''),driver2)
         except:
-            print("End of list")
-    driver.quit()
+            print("ERROR Location")
+            driver2.quit()
+
+def HotelScrap(url):
+    with open("Data_url/hotel.txt") as file:
+        lines = file.readlines()
+    for link in lines:
+        try:
+            driver2 = webdriver.Remote("http://selenium:4444/wd/hub",
+                                        desired_capabilities=DesiredCapabilities.CHROME)
+
+            ScrapHotel(link.replace("\n",''),driver2)
+        except:
+            print("ERROR hotel!")
+            driver2.quit()
+
 
 if __name__ == "__main__":
     time.sleep(10)
@@ -123,6 +84,10 @@ if __name__ == "__main__":
     url_restaraunt = configParser.get("config-data","rest_url")
     url_location = configParser.get("config-data","loc_url")
     url_hotel = configParser.get("config-data","hotel_url")
+
+    hotel_page = configParser.get("config-data","hotel_page")
+    restaraunt_page = configParser.get("config-data","rest_page")
+    location_page = configParser.get("config-data","loc_page")
 
     p_rest = Process(target=RestarauntScrap, args=(url_restaraunt,))
     p_location = Process(target=LocationScrap, args=(url_location,))
