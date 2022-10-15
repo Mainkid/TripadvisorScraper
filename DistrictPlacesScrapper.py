@@ -143,9 +143,9 @@ if __name__ == "__main__":
 
 
     p_rest = Process(target=RestarauntScrap, args=(url_restaraunt,proxy_login,proxy_password,d,))
-    p_location = Process(target=LocationScrap, args=(url_location,proxy_login,proxy_password,d,))
-    p_hotel = Process(target=HotelScrap,args=(url_hotel,proxy_login,proxy_password,d,))
+    #p_location = Process(target=LocationScrap, args=(url_location,proxy_login,proxy_password,d,))
+    #p_hotel = Process(target=HotelScrap,args=(url_hotel,proxy_login,proxy_password,d,))
     p_rest.start()
-    p_location.start()
-    p_hotel.start()
+    #p_location.start()
+    #p_hotel.start()
     p_rest.join()

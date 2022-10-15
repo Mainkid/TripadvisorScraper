@@ -11,7 +11,7 @@ import time
 website_url_base = r"https://www.tripadvisor.ru/"
 path_to_file = "location.csv"
 num_page = 100
-sleep_time=4
+sleep_time=2
 
 def ScrapLocation(url,type_loc,driver):
     #driver = webdriver.Remote("http://selenium:4444/wd/hub",desired_capabilities=DesiredCapabilities.CHROME)
@@ -45,7 +45,6 @@ def ScrapLocation(url,type_loc,driver):
             except:
                 pass
             review = container[j].find_element("xpath", ".//span/div/div[5]/div[1]/div").text.replace("\n", " ")
-
             try:
                 review_date = container[j].find_element("xpath",".//span/div/div[7]/div[1]").text
 
@@ -81,7 +80,8 @@ def ScrapLocation(url,type_loc,driver):
         try:
             WebDriverWait(driver, timeout=10).until(
                 lambda d: d.find_element("xpath", '//div[11]/div[1]/div/div[1]/div[2]/div/a'))
-            driver.find_element("xpath",'//div[11]/div[1]/div/div[1]/div[2]/div/a').click()
+            next_btn=driver.find_element("xpath",'//div[11]/div[1]/div/div[1]/div[2]/div/a')
+            ActionChains(driver).move_to_element(next_btn).click().perform()
         except:
             print("End Of Page")
             break

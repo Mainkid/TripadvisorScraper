@@ -13,7 +13,7 @@ import time
 website_url_base = r"https://www.tripadvisor.ru/"
 path_to_file = "hotel.csv"
 num_page = 1000
-sleep_time=4
+sleep_time=2
 
 def ScrapHotel(url,driver):
     #driver = webdriver.Remote("http://127.0.0.1:4444/wd/hub", desired_capabilities=DesiredCapabilities.CHROME)
@@ -100,7 +100,8 @@ def ScrapHotel(url,driver):
         try:
             WebDriverWait(driver, timeout=10).until(
                 lambda d: d.find_element("xpath", "//*[@class='ui_button nav next primary ']"))
-            driver.find_element("xpath","//*[@class='ui_button nav next primary ']").click()
+            next_btn=driver.find_element("xpath","//*[@class='ui_button nav next primary ']")
+            ActionChains(driver).move_to_element(next_btn).click().perform()
         except:
             print("END OF PAGE")
             break

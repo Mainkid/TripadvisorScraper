@@ -13,7 +13,7 @@ import time
 website_url_base = r"https://www.tripadvisor.ru/"
 path_to_file = "restaraunt.csv"
 num_page = 100
-sleep_time=4
+sleep_time=2
 
 def ScrapRestaraunt(url,driver):
     # Import the webdriver
@@ -71,7 +71,9 @@ def ScrapRestaraunt(url,driver):
 
             user_nickname = container[j].find_element("xpath",".//div/div/div/div[1]/div/div/div[1]/div[2]/div").text
             try:
-                container[j].find_element("xpath", ".//div/div/div/div[1]/div/div/div[1]").click()
+                #container[j].find_element("xpath", ".//div/div/div/div[1]/div/div/div[1]").click()
+                btn = container[j].find_element("xpath", ".//div/div/div/div[1]/div/div/div[1]")
+                ActionChains(driver).move_to_element(btn).click().perform()
             except:
                 print("Oops")
                 continue
@@ -96,8 +98,11 @@ def ScrapRestaraunt(url,driver):
         try:
             WebDriverWait(driver, timeout=10).until(
                 lambda d: d.find_element("xpath",'.//a[@class="nav next ui_button primary"]'))
-            driver.find_element("xpath",'.//a[@class="nav next ui_button primary"]').click()
-        except:
+            next_btn=driver.find_element("xpath",'.//a[@class="nav next ui_button primary"]')
+            ActionChains(driver).move_to_element(next_btn).click().perform()
+        except Exception as e:
             print("End Of Page")
+            print(e)
+            print("_____")
             break
     driver.quit()
