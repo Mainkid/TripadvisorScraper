@@ -2,6 +2,7 @@ import sys
 import csv
 from selenium import webdriver
 from selenium.webdriver.common.action_chains import ActionChains
+from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
 from UserScrapper import ScrapUser
 from webdriver_manager.chrome import ChromeDriverManager
@@ -12,7 +13,7 @@ path_to_file = "location.csv"
 num_page = 100
 sleep_time=2
 
-def ScrapLocation(url,driver):
+def ScrapLocation(url,type_loc,driver):
     #driver = webdriver.Remote("http://selenium:4444/wd/hub",desired_capabilities=DesiredCapabilities.CHROME)
     driver.set_window_size(1024, 600)
     driver.maximize_window()
@@ -23,6 +24,9 @@ def ScrapLocation(url,driver):
     csvFile = open(path_to_file, 'a', encoding="utf-8",newline='')
     csvWriter = csv.writer(csvFile)
 
+    WebDriverWait(driver, timeout=10).until(
+        lambda d: d.find_element("xpath", "//div[1]/main/div[1]/div[2]/div[1]/header/div[3]/div[1]/div/h1"))
+
     location_name = driver.find_element("xpath","//div[1]/main/div[1]/div[2]/div[1]/header/div[3]/div[1]/div/h1").text
     location_type = driver.find_element("xpath","//div[1]/main/div[1]/div[2]/div[2]/div/div/span/section[1]/div/div/span/div/div[1]/div[3]/div/div/div[1]").text
     reviews_amount = driver.find_element("xpath", "//span/section[1]/div/div/span/div/div[1]/div[1]/a/div/span/span").text
@@ -32,9 +36,8 @@ def ScrapLocation(url,driver):
 
         # expand the review
         time.sleep(sleep_time)
-
         container = driver.find_elements("xpath", "//section[7]/div/div/span/section/section/div[1]/div/div[5]/div")
-
+        print(len(container)-1)
         for j in range(len(container)-1):
             title = container[j].find_element("xpath",".//span/div/div[3]").text
             try:
@@ -70,7 +73,7 @@ def ScrapLocation(url,driver):
             user_data=ScrapUser(profile_link)
 
             csvWriter.writerow(
-                [location_name, url, address, "Развлечения", "Развлечения", location_type, reviews_amount, title, review, "", rating,
+                [location_name, url, address, "Развлечения", type_loc, location_type, reviews_amount, title, review, "", rating,
                  visiting_date, review_date,
                  review_likes, user_nickname, profile_link] + user_data)
             print("OK")
