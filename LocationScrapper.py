@@ -82,8 +82,10 @@ def ScrapLocation(url,type_loc,driver):
                 lambda d: d.find_element("xpath", '//div[11]/div[1]/div/div[1]/div[2]/div/a'))
             next_btn=driver.find_element("xpath",'//div[11]/div[1]/div/div[1]/div[2]/div/a')
             ActionChains(driver).move_to_element(next_btn).click().perform()
-        except:
+        except Exception as e:
+
             print("End Of Page")
+            print(e)
             break
 
     driver.quit()

@@ -102,8 +102,9 @@ def ScrapHotel(url,driver):
                 lambda d: d.find_element("xpath", "//*[@class='ui_button nav next primary ']"))
             next_btn=driver.find_element("xpath","//*[@class='ui_button nav next primary ']")
             ActionChains(driver).move_to_element(next_btn).click().perform()
-        except:
-            print("END OF PAGE")
+        except Exception as e:
+            print("End Of Page")
+            print(e)
             break
 
     driver.quit()

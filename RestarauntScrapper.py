@@ -82,8 +82,9 @@ def ScrapRestaraunt(url,driver):
 
             try:
                 profile_link = driver.find_element("xpath","//span/div[3]/div/div/div/a").get_attribute("href")
-            except:
+            except Exception as e:
                 print("Oops2")
+                print(e)
                 continue
 
             user_data=ScrapUser(profile_link)
@@ -96,8 +97,6 @@ def ScrapRestaraunt(url,driver):
 
             print("OK")
         try:
-            WebDriverWait(driver, timeout=10).until(
-                lambda d: d.find_element("xpath",'.//a[@class="nav next ui_button primary"]'))
             next_btn=driver.find_element("xpath",'.//a[@class="nav next ui_button primary"]')
             ActionChains(driver).move_to_element(next_btn).click().perform()
         except Exception as e:
