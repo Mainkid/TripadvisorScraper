@@ -13,7 +13,7 @@ import time
 website_url_base = r"https://www.tripadvisor.ru/"
 path_to_file = "restaraunt.csv"
 num_page = 100
-sleep_time=2
+sleep_time=4
 
 def ScrapRestaraunt(url,driver):
     # Import the webdriver
@@ -94,6 +94,8 @@ def ScrapRestaraunt(url,driver):
 
             print("OK")
         try:
+            WebDriverWait(driver, timeout=10).until(
+                lambda d: d.find_element("xpath",'.//a[@class="nav next ui_button primary"]'))
             driver.find_element("xpath",'.//a[@class="nav next ui_button primary"]').click()
         except:
             print("End Of Page")

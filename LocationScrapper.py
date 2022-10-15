@@ -11,7 +11,7 @@ import time
 website_url_base = r"https://www.tripadvisor.ru/"
 path_to_file = "location.csv"
 num_page = 100
-sleep_time=2
+sleep_time=4
 
 def ScrapLocation(url,type_loc,driver):
     #driver = webdriver.Remote("http://selenium:4444/wd/hub",desired_capabilities=DesiredCapabilities.CHROME)
@@ -79,6 +79,8 @@ def ScrapLocation(url,type_loc,driver):
             print("OK")
             # change the page
         try:
+            WebDriverWait(driver, timeout=10).until(
+                lambda d: d.find_element("xpath", '//div[11]/div[1]/div/div[1]/div[2]/div/a'))
             driver.find_element("xpath",'//div[11]/div[1]/div/div[1]/div[2]/div/a').click()
         except:
             print("End Of Page")
