@@ -3,6 +3,7 @@ import csv
 from selenium import webdriver
 from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
+from Tmp_services.testProxy import get_chromedriver
 
 from webdriver_manager.chrome import ChromeDriverManager
 import time
@@ -12,8 +13,8 @@ path_to_file = "reviews.csv"
 num_page = 10
 sleep_time=2
 
-def ScrapUserEmblems(url):
-    driver = webdriver.Remote("http://selenium:4444/wd/hub", desired_capabilities=DesiredCapabilities.CHROME)
+def ScrapUserEmblems(url,proxy_login,proxy_password,proxy):
+    driver=get_chromedriver(proxy['proxy'].split(":")[0],proxy['proxy'].split(":")[1],proxy_login,proxy_password,True)
     driver.set_window_size(1024, 600)
     driver.maximize_window()
     actions = ActionChains(driver)
@@ -31,8 +32,8 @@ def ScrapUserEmblems(url):
 
     return [total_thanks,level]
 
-def ScrapUserCities(url):
-    driver = webdriver.Remote("http://selenium:4444/wd/hub",desired_capabilities=DesiredCapabilities.CHROME)
+def ScrapUserCities(url,proxy_login,proxy_password,proxy):
+    driver=get_chromedriver(proxy['proxy'].split(":")[0],proxy['proxy'].split(":")[1],proxy_login,proxy_password,True)
     driver.set_window_size(1024, 600)
     driver.maximize_window()
     actions = ActionChains(driver)
@@ -44,8 +45,8 @@ def ScrapUserCities(url):
     driver.quit()
     return [cities]
 
-def ScrapUser(url):
-    driver = webdriver.Remote("http://selenium:4444/wd/hub",desired_capabilities=DesiredCapabilities.CHROME)
+def ScrapUser(url,proxy_login,proxy_password,proxy):
+    driver = get_chromedriver(proxy['proxy'].split(":")[0], proxy['proxy'].split(":")[1], proxy_login, proxy_password, True)
     driver.set_window_size(1024, 600)
     driver.maximize_window()
     actions = ActionChains(driver)
@@ -85,8 +86,8 @@ def ScrapUser(url):
 
 
 
-    emblems_list=ScrapUserEmblems(emblems_href)
-    visited_cities_list=ScrapUserCities(cities_href)
+    emblems_list=ScrapUserEmblems(emblems_href,proxy_login,proxy_password,proxy)
+    visited_cities_list=ScrapUserCities(cities_href,proxy_login,proxy_password,proxy)
 
     driver.quit()
 

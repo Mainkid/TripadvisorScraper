@@ -15,7 +15,7 @@ path_to_file = "hotel.csv"
 num_page = 1000
 sleep_time=2
 
-def ScrapHotel(url,driver):
+def ScrapHotel(url,driver,proxy_login,proxy_password,proxy):
     #driver = webdriver.Remote("http://127.0.0.1:4444/wd/hub", desired_capabilities=DesiredCapabilities.CHROME)
     #driver = webdriver.Remote("http://selenium:4444/wd/hub", desired_capabilities=DesiredCapabilities.CHROME)
     driver.set_window_size(1024, 600)
@@ -84,7 +84,7 @@ def ScrapHotel(url,driver):
             try:
                 profile_link = container[j].find_element("xpath",".//*[@class='kjIqZ I ui_social_avatar inline']").get_attribute("href")
                 user_nickname = container[j].find_element("xpath",".//div[1]/div/div[2]/span/a").text
-                user_data=ScrapUser(profile_link)
+                user_data=ScrapUser(profile_link,proxy_login,proxy_password,proxy)
             except:
                 print("OI")
                 continue

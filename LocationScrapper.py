@@ -13,7 +13,7 @@ path_to_file = "location.csv"
 num_page = 100
 sleep_time=2
 
-def ScrapLocation(url,type_loc,driver):
+def ScrapLocation(url,type_loc,driver,proxy_login,proxy_password,proxy):
     #driver = webdriver.Remote("http://selenium:4444/wd/hub",desired_capabilities=DesiredCapabilities.CHROME)
     driver.set_window_size(1024, 600)
     driver.maximize_window()
@@ -69,7 +69,7 @@ def ScrapLocation(url,type_loc,driver):
 
             profile_link =  container[j].find_element("xpath",".//span/div/div[1]/div[1]/div[2]/span/a").get_attribute("href")
             visiting_date=""
-            user_data=ScrapUser(profile_link)
+            user_data=ScrapUser(profile_link,proxy_login,proxy_password,proxy)
 
             csvWriter.writerow(
                 [location_name, url, address, "Развлечения", type_loc, location_type, reviews_amount, title, review, "", rating,

@@ -15,7 +15,7 @@ path_to_file = "restaraunt.csv"
 num_page = 100
 sleep_time=2
 
-def ScrapRestaraunt(url,driver):
+def ScrapRestaraunt(url,driver,proxy_login,proxy_password,proxy):
     # Import the webdriver
 
     driver.set_window_size(1024, 600)
@@ -87,7 +87,7 @@ def ScrapRestaraunt(url,driver):
                 print(e)
                 continue
 
-            user_data=ScrapUser(profile_link)
+            user_data=ScrapUser(profile_link,proxy_login,proxy_password,proxy)
 
             csvWriter.writerow([restaraunt_name,url,address,"Рестораны","","Рестораны",reviews_amount,title,review,"",rating,visiting_date,review_date,
                                 review_likes,user_nickname,profile_link]+user_data)

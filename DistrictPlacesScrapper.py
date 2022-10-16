@@ -56,9 +56,9 @@ def RestarauntScrap(url,proxy_login,proxy_password,proxy):
         for row in spamreader:
             try:
                 driver2 = get_chromedriver(proxy_val.split(":")[0],proxy_val.split(":")[1],proxy_login,proxy_password,True)
-                ScrapRestaraunt(row[0].replace("\n",''),driver2)
+                ScrapRestaraunt(row[0].replace("\n",''),driver2,proxy_login,proxy_password,proxy)
             except Exception as e:
-                driver2.save_screenshot("/Sreenshots/" + str(uuid.uuid4())+".png")
+                #driver2.save_screenshot("/Sreenshots/" + str(uuid.uuid4())+".png")
                 if ("denied" in driver2.page_source.lower()):
                     change_proxy(proxy)
                 else:
@@ -77,9 +77,9 @@ def LocationScrap(url,proxy_login,proxy_password,proxy):
 
             try:
                 driver2 = get_chromedriver(proxy_val.split(":")[0],proxy_val.split(":")[1],proxy_login,proxy_password,True)
-                ScrapLocation(row[0].replace("\n",''),row[1],driver2)
+                ScrapLocation(row[0].replace("\n",''),row[1],driver2,proxy_login,proxy_password,proxy)
             except Exception as e:
-                driver2.save_screenshot("/Sreenshots/"+str(uuid.uuid4())+".png")
+                #driver2.save_screenshot("/Sreenshots/"+str(uuid.uuid4())+".png")
                 if ("denied" in driver2.page_source.lower()):
                     change_proxy(proxy)
                 else:
@@ -97,9 +97,9 @@ def HotelScrap(url,proxy_login,proxy_password,proxy):
             try:
                 driver2 = get_chromedriver(proxy_val.split(":")[0],proxy_val.split(":")[1],proxy_login,proxy_password,True)
 
-                ScrapHotel(row[0].replace("\n",''),driver2)
+                ScrapHotel(row[0].replace("\n",''),driver2,proxy_login,proxy_password,proxy)
             except Exception as e:
-                driver2.save_screenshot("/Sreenshots/" +str( uuid.uuid4())+".png")
+                #driver2.save_screenshot("/Sreenshots/" +str( uuid.uuid4())+".png")
                 if ("denied" in driver2.page_source.lower()):
                     change_proxy(proxy)
                 else:
