@@ -75,8 +75,8 @@ def get_chromedriver(proxy_host,proxy_port,proxy_user,proxy_pass,use_proxy=True,
             zp.writestr("manifest.json", manifest_json)
             zp.writestr("background.js", background_js)
         chrome_options.add_extension(pluginfile)
-    if user_agent:
-        chrome_options.add_argument('--user-agent=%s' % user_agent)
+    user_agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/106.0.0.0 Safari/537.36"
+    chrome_options.add_argument('--user-agent=%s' % user_agent)
     driver = webdriver.Remote("http://selenium:4444/wd/hub",
                                options=chrome_options)
     #driver = webdriver.Chrome(ChromeDriverManager().install(),options=chrome_options)

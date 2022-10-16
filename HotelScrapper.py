@@ -82,7 +82,7 @@ def ScrapHotel(url,driver):
             time.sleep(sleep_time)
 
             try:
-                profile_link =  container[j].find_element("xpath",".//*[@class='kjIqZ I ui_social_avatar inline']").get_attribute("href")
+                profile_link = container[j].find_element("xpath",".//*[@class='kjIqZ I ui_social_avatar inline']").get_attribute("href")
                 user_nickname = container[j].find_element("xpath",".//div[1]/div/div[2]/span/a").text
                 user_data=ScrapUser(profile_link)
             except:

@@ -97,6 +97,7 @@ def ScrapRestaraunt(url,driver):
 
             print("OK")
         try:
+            time.sleep(5)
             next_btn=driver.find_element("xpath",'.//a[@class="nav next ui_button primary"]')
             ActionChains(driver).move_to_element(next_btn).click().perform()
         except Exception as e:
