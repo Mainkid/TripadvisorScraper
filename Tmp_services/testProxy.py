@@ -78,14 +78,14 @@ def get_chromedriver(proxy_host,proxy_port,proxy_user,proxy_pass,use_proxy=True,
     if user_agent:
         chrome_options.add_argument('--user-agent=%s' % user_agent)
     driver = webdriver.Remote("http://selenium:4444/wd/hub",
-                               options=chrome_options)
+                              options=chrome_options)
     #driver = webdriver.Chrome(ChromeDriverManager().install(),options=chrome_options)
     return driver
 
 def main():
-    driver = get_chromedriver(use_proxy=True)
+    driver = get_chromedriver('193.233.62.239','50100','jdczyrf1','f24gbb4YLr')
     #driver.get('https://www.google.com/search?q=my+ip+address')
-    driver.get('https://2ip.ru/')
+    driver.get('https://ya.ru/')
     time.sleep(100)
 
 if __name__ == '__main__':

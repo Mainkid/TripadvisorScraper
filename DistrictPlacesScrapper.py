@@ -4,6 +4,7 @@ import os
 import uuid
 import configparser
 import ctypes
+from random import randrange
 from selenium import webdriver
 from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
@@ -49,6 +50,16 @@ def change_proxy(proxy):
             elif flag:
                 proxy['proxy']=line
 
+def TimerChangeProxy(proxy):
+    while True:
+        with open("Tmp_services/proxyList.txt") as file:
+            for line in file:
+                delay = randrange(1, 10)
+                proxy['proxy']=line
+                print("_____CHANGING PROXY_____")
+                print("currentProxy: "+line)
+                time.sleep(delay)
+
 def RestarauntScrap(url,proxy_login,proxy_password,proxy):
     proxy_val=proxy['proxy']
     with open('Data_url/rest_source.csv', newline='', encoding="utf-8") as csvfile:
@@ -59,13 +70,13 @@ def RestarauntScrap(url,proxy_login,proxy_password,proxy):
                 ScrapRestaraunt(row[0].replace("\n",''),driver2,proxy_login,proxy_password,proxy)
             except Exception as e:
                 #driver2.save_screenshot("/Sreenshots/" + str(uuid.uuid4())+".png")
-                if ("denied" in driver2.page_source.lower()):
-                    change_proxy(proxy)
-                else:
-                    print("____")
-                    print("Error Restaraunt")
-                    print(e)
-                    print("____")
+                #if ("denied" in driver2.page_source.lower()):
+                    #change_proxy(proxy)
+                #else:
+                print("____")
+                print("Error Restaraunt")
+                print(e)
+                print("____")
                 driver2.quit()
 
 
@@ -80,13 +91,13 @@ def LocationScrap(url,proxy_login,proxy_password,proxy):
                 ScrapLocation(row[0].replace("\n",''),row[1],driver2,proxy_login,proxy_password,proxy)
             except Exception as e:
                 #driver2.save_screenshot("/Sreenshots/"+str(uuid.uuid4())+".png")
-                if ("denied" in driver2.page_source.lower()):
-                    change_proxy(proxy)
-                else:
-                    print("____")
-                    print("ERROR Location")
-                    print(e)
-                    print("____")
+                #if ("denied" in driver2.page_source.lower()):
+                    #change_proxy(proxy)
+                #else:
+                print("____")
+                print("ERROR Location")
+                print(e)
+                print("____")
                 driver2.quit()
 
 def HotelScrap(url,proxy_login,proxy_password,proxy):
@@ -100,13 +111,13 @@ def HotelScrap(url,proxy_login,proxy_password,proxy):
                 ScrapHotel(row[0].replace("\n",''),driver2,proxy_login,proxy_password,proxy)
             except Exception as e:
                 #driver2.save_screenshot("/Sreenshots/" +str( uuid.uuid4())+".png")
-                if ("denied" in driver2.page_source.lower()):
-                    change_proxy(proxy)
-                else:
-                    print("____")
-                    print("ERROR hotel!")
-                    print(e)
-                    print("____")
+                #if ("denied" in driver2.page_source.lower()):
+                #    change_proxy(proxy)
+                #else:
+                print("____")
+                print("ERROR hotel!")
+                print(e)
+                print("____")
                 driver2.quit()
 
 
@@ -145,7 +156,9 @@ if __name__ == "__main__":
     p_rest = Process(target=RestarauntScrap, args=(url_restaraunt,proxy_login,proxy_password,d,))
     p_location = Process(target=LocationScrap, args=(url_location,proxy_login,proxy_password,d,))
     p_hotel = Process(target=HotelScrap,args=(url_hotel,proxy_login,proxy_password,d,))
+    p_changeProxy=Process(target=TimerChangeProxy,args=(d,))
     p_rest.start()
     p_location.start()
     p_hotel.start()
+    p_changeProxy.start()
     p_rest.join()
