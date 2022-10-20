@@ -54,7 +54,7 @@ def TimerChangeProxy(proxy):
     while True:
         with open("Tmp_services/proxyList.txt") as file:
             for line in file:
-                delay = randrange(1, 10)
+                delay = randrange(3600, 7200)
                 proxy['proxy']=line
                 print("_____CHANGING PROXY_____")
                 print("currentProxy: "+line)
