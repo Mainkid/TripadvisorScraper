@@ -8,12 +8,17 @@ from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
 from UserScrapper import ScrapUser
 from webdriver_manager.chrome import ChromeDriverManager
+from random import randrange
 import time
 
 website_url_base = r"https://www.tripadvisor.ru/"
 path_to_file = "hotel.csv"
 num_page = 1000
-sleep_time=2
+
+
+def sleep_time():
+    delay=randrange(2, 5)
+    return delay
 
 def ScrapHotel(url,driver,proxy_login,proxy_password,proxy):
     #driver = webdriver.Remote("http://127.0.0.1:4444/wd/hub", desired_capabilities=DesiredCapabilities.CHROME)
@@ -41,7 +46,7 @@ def ScrapHotel(url,driver,proxy_login,proxy_password,proxy):
 
 
         # expand the review
-        time.sleep(sleep_time)
+        time.sleep(sleep_time())
 
         container = driver.find_elements("xpath", '//*[@class="YibKl MC R2 Gi z Z BB pBbQr"]')
         next_btn=container[0].find_element("xpath", ".//*[@class='Ignyf _S Z']")
@@ -79,7 +84,7 @@ def ScrapHotel(url,driver,proxy_login,proxy_password,proxy):
                 visiting_date = visiting_date[2] + " " +visiting_date[3] + " " +visiting_date[4]
             except:
                 visiting_date = ""
-            time.sleep(sleep_time)
+            time.sleep(sleep_time())
 
             try:
                 profile_link = container[j].find_element("xpath",".//*[@class='kjIqZ I ui_social_avatar inline']").get_attribute("href")

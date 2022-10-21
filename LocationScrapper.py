@@ -5,13 +5,17 @@ from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
 from UserScrapper import ScrapUser
+from random import randrange
 from webdriver_manager.chrome import ChromeDriverManager
 import time
 
 website_url_base = r"https://www.tripadvisor.ru/"
 path_to_file = "location.csv"
 num_page = 100
-sleep_time=2
+
+def sleep_time():
+    delay=randrange(2, 5)
+    return delay
 
 def ScrapLocation(url,type_loc,driver,proxy_login,proxy_password,proxy):
     #driver = webdriver.Remote("http://selenium:4444/wd/hub",desired_capabilities=DesiredCapabilities.CHROME)
@@ -35,7 +39,7 @@ def ScrapLocation(url,type_loc,driver,proxy_login,proxy_password,proxy):
     for i in range(0, num_page):
 
         # expand the review
-        time.sleep(sleep_time)
+        time.sleep(sleep_time())
         container = driver.find_elements("xpath", "//section[7]/div/div/span/section/section/div[1]/div/div[5]/div")
         print(len(container)-1)
         for j in range(len(container)-1):
@@ -64,7 +68,7 @@ def ScrapLocation(url,type_loc,driver,proxy_login,proxy_password,proxy):
                 review_likes = 0
 
             user_nickname=container[j].find_element("xpath",".//span/div/div[1]/div[1]/div[2]/span/a").text
-            time.sleep(sleep_time)
+            time.sleep(sleep_time())
 
 
             profile_link =  container[j].find_element("xpath",".//span/div/div[1]/div[1]/div[2]/span/a").get_attribute("href")

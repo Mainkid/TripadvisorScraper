@@ -7,7 +7,7 @@ from selenium import webdriver
 
 
 
-def get_chromedriver(proxy_host,proxy_port,proxy_user,proxy_pass,use_proxy=True, user_agent=None):
+def get_chromedriver(proxy_host,proxy_port,proxy_user,proxy_pass,user_agent,use_proxy=True, ):
     PROXY_HOST = proxy_host  # rotating proxy or host
     PROXY_PORT = proxy_port  # port
     PROXY_USER = proxy_user  # username
@@ -83,9 +83,9 @@ def get_chromedriver(proxy_host,proxy_port,proxy_user,proxy_pass,use_proxy=True,
     return driver
 
 def main():
-    driver = get_chromedriver('193.233.62.239','50100','jdczyrf1','f24gbb4YLr')
+    driver = get_chromedriver('46.8.14.98','1050','nkPMMT','PBAsOwObw5')
     #driver.get('https://www.google.com/search?q=my+ip+address')
-    driver.get('https://ya.ru/')
+    driver.get('https://www.tripadvisor.ru/Attraction_Review-g737147-d6490627-Reviews-Hat_Art_Gallery-Barnaul_Altai_Krai_Siberian_District.html')
     time.sleep(100)
 
 if __name__ == '__main__':

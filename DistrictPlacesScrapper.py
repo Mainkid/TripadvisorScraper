@@ -14,6 +14,8 @@ from RestarauntScrapper import ScrapRestaraunt
 from HotelScrapper import ScrapHotel
 from LocationScrapper import ScrapLocation
 from Tmp_services.testProxy import get_chromedriver
+from random_user_agent.user_agent import UserAgent
+from random_user_agent.params import SoftwareName, OperatingSystem
 
 num_page = 100
 
@@ -54,19 +56,30 @@ def TimerChangeProxy(proxy):
     while True:
         with open("Tmp_services/proxyList.txt") as file:
             for line in file:
-                delay = randrange(1, 10)
+                delay = randrange(1800, 3600)
                 proxy['proxy']=line
                 print("_____CHANGING PROXY_____")
                 print("currentProxy: "+line)
                 time.sleep(delay)
 
+def TimerChangeUserAgent(d):
+    software_names = [SoftwareName.CHROME.value,SoftwareName.EDGE.value,SoftwareName.OPERA.value]
+    operating_systems = [OperatingSystem.WINDOWS.value, OperatingSystem.LINUX.value, OperatingSystem.MAC_OS_X.value]
+    user_agent_rotator = UserAgent(software_names=software_names, operating_systems=operating_systems, limit=100)
+    while True:
+        d['user_agent'] = user_agent_rotator.get_random_user_agent()
+        delay = randrange(180, 640)
+        time.sleep(delay)
+
+
 def RestarauntScrap(url,proxy_login,proxy_password,proxy):
     proxy_val=proxy['proxy']
+
     with open('Data_url/rest_source.csv', newline='', encoding="utf-8") as csvfile:
         spamreader = csv.reader(csvfile, delimiter=',')
         for row in spamreader:
             try:
-                driver2 = get_chromedriver(proxy_val.split(":")[0],proxy_val.split(":")[1],proxy_login,proxy_password,True)
+                driver2 = get_chromedriver(proxy_val.split(":")[0],proxy_val.split(":")[1],proxy_login,proxy_password,proxy['user_agent'],True)
                 ScrapRestaraunt(row[0].replace("\n",''),driver2,proxy_login,proxy_password,proxy)
             except Exception as e:
                 #driver2.save_screenshot("/Sreenshots/" + str(uuid.uuid4())+".png")
@@ -87,7 +100,7 @@ def LocationScrap(url,proxy_login,proxy_password,proxy):
         for row in spamreader:
 
             try:
-                driver2 = get_chromedriver(proxy_val.split(":")[0],proxy_val.split(":")[1],proxy_login,proxy_password,True)
+                driver2 = get_chromedriver(proxy_val.split(":")[0],proxy_val.split(":")[1],proxy_login,proxy_password,proxy['user_agent'],True)
                 ScrapLocation(row[0].replace("\n",''),row[1],driver2,proxy_login,proxy_password,proxy)
             except Exception as e:
                 #driver2.save_screenshot("/Sreenshots/"+str(uuid.uuid4())+".png")
@@ -106,7 +119,7 @@ def HotelScrap(url,proxy_login,proxy_password,proxy):
         spamreader = csv.reader(csvfile, delimiter=',')
         for row in spamreader:
             try:
-                driver2 = get_chromedriver(proxy_val.split(":")[0],proxy_val.split(":")[1],proxy_login,proxy_password,True)
+                driver2 = get_chromedriver(proxy_val.split(":")[0],proxy_val.split(":")[1],proxy_login,proxy_password,proxy['user_agent'],True)
 
                 ScrapHotel(row[0].replace("\n",''),driver2,proxy_login,proxy_password,proxy)
             except Exception as e:
@@ -151,14 +164,16 @@ if __name__ == "__main__":
             d['proxy'] = line
             break
 
-
+    d['user_agent']='Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/106.0.0.0 Safari/537.36'
 
     p_rest = Process(target=RestarauntScrap, args=(url_restaraunt,proxy_login,proxy_password,d,))
     p_location = Process(target=LocationScrap, args=(url_location,proxy_login,proxy_password,d,))
     p_hotel = Process(target=HotelScrap,args=(url_hotel,proxy_login,proxy_password,d,))
     p_changeProxy=Process(target=TimerChangeProxy,args=(d,))
+    p_changeUserAgent=Process(target=TimerChangeUserAgent,args=(d,))
     p_rest.start()
     p_location.start()
     p_hotel.start()
     p_changeProxy.start()
+    p_changeUserAgent.start()
     p_rest.join()

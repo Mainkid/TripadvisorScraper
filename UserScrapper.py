@@ -4,22 +4,26 @@ from selenium import webdriver
 from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
 from Tmp_services.testProxy import get_chromedriver
-
+from random import randrange
 from webdriver_manager.chrome import ChromeDriverManager
 import time
 
 website_url_base = r"https://www.tripadvisor.ru/"
 path_to_file = "reviews.csv"
 num_page = 10
-sleep_time=2
+#sleep_time=2
+
+def sleep_time():
+    delay=randrange(2, 5)
+    return delay
 
 def ScrapUserEmblems(url,proxy_login,proxy_password,proxy):
-    driver=get_chromedriver(proxy['proxy'].split(":")[0],proxy['proxy'].split(":")[1],proxy_login,proxy_password,True)
+    driver=get_chromedriver(proxy['proxy'].split(":")[0],proxy['proxy'].split(":")[1],proxy_login,proxy_password,proxy['user_agent'],True)
     driver.set_window_size(1024, 600)
     driver.maximize_window()
     actions = ActionChains(driver)
     driver.get(url)
-    time.sleep(sleep_time)
+    time.sleep(sleep_time())
     try:
         total_thanks = driver.find_element("xpath","//div[4]/div[2]/div/div[2]/div[2]/div[2]/div[2]/div/div[2]").text
     except:
@@ -33,12 +37,12 @@ def ScrapUserEmblems(url,proxy_login,proxy_password,proxy):
     return [total_thanks,level]
 
 def ScrapUserCities(url,proxy_login,proxy_password,proxy):
-    driver=get_chromedriver(proxy['proxy'].split(":")[0],proxy['proxy'].split(":")[1],proxy_login,proxy_password,True)
+    driver=get_chromedriver(proxy['proxy'].split(":")[0],proxy['proxy'].split(":")[1],proxy_login,proxy_password,proxy['user_agent'],True)
     driver.set_window_size(1024, 600)
     driver.maximize_window()
     actions = ActionChains(driver)
     driver.get(url)
-    time.sleep(sleep_time)
+    time.sleep(sleep_time())
 
     cities=driver.find_element("xpath","//div[4]/div[2]/div/div[2]/div[2]/div[2]/div[1]/div[1]/span/span").text
     cities=cities[1:-1]
@@ -46,7 +50,7 @@ def ScrapUserCities(url,proxy_login,proxy_password,proxy):
     return [cities]
 
 def ScrapUser(url,proxy_login,proxy_password,proxy):
-    driver = get_chromedriver(proxy['proxy'].split(":")[0], proxy['proxy'].split(":")[1], proxy_login, proxy_password, True)
+    driver = get_chromedriver(proxy['proxy'].split(":")[0], proxy['proxy'].split(":")[1], proxy_login, proxy_password,proxy['user_agent'],True)
     driver.set_window_size(1024, 600)
     driver.maximize_window()
     actions = ActionChains(driver)

@@ -6,6 +6,7 @@ from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from UserScrapper import ScrapUser
+from random import randrange
 from webdriver_manager.chrome import ChromeDriverManager
 import time
 
@@ -13,7 +14,10 @@ import time
 website_url_base = r"https://www.tripadvisor.ru/"
 path_to_file = "restaraunt.csv"
 num_page = 100
-sleep_time=2
+
+def sleep_time():
+    delay=randrange(2, 5)
+    return delay
 
 def ScrapRestaraunt(url,driver,proxy_login,proxy_password,proxy):
     # Import the webdriver
@@ -33,14 +37,14 @@ def ScrapRestaraunt(url,driver,proxy_login,proxy_password,proxy):
     for i in range(0, num_page):
 
         # expand the review
-        time.sleep(sleep_time)
+        time.sleep(sleep_time())
         try:
             next=driver.find_elements("xpath","//span[@class='taLnk ulBlueLinks']")
             for n in next:
                 n.click()
         except:
             print("No More button")
-        time.sleep(sleep_time)
+        time.sleep(sleep_time())
 
         container = driver.find_elements("xpath", "//div[@class='review-container']")
         print("len:" + str(len(container)))
@@ -78,7 +82,7 @@ def ScrapRestaraunt(url,driver,proxy_login,proxy_password,proxy):
                 print("Oops")
                 continue
 
-            time.sleep(sleep_time)
+            time.sleep(sleep_time())
 
             try:
                 profile_link = driver.find_element("xpath","//span/div[3]/div/div/div/a").get_attribute("href")

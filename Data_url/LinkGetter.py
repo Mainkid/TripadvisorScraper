@@ -9,6 +9,7 @@ from selenium.webdriver.common.action_chains import ActionChains
 import time
 from multiprocessing import Process
 
+myset=set()
 
 def getName(element):
     print(element.get_attribute('innerHTML'))
@@ -53,10 +54,10 @@ for i in range(0, 1000):
     q = q.find_elements("xpath", ".//div[1]/div[2]/div[1]/div/span/a[@target='_blank']")
     for location in q:
         _href_location = location.get_attribute("href")
-        #with open('rest.txt', 'a') as the_file:
-        #    the_file.write(_href_location+"\n")
-        csvWriter.writerow(
-            [_href_location,"Рестораны"])
+        if _href_location not in myset:
+            myset.add(_href_location)
+            csvWriter.writerow(
+                [_href_location,"Рестораны"])
     try:
         driver.find_element("xpath",
                             "//a[@class='nav next rndBtn ui_button primary taLnk']").click()
@@ -108,8 +109,10 @@ for i in range(1,100):
         q = driver.find_elements("xpath", '//div/span/div/article/div[2]/header/div/div/a[1]')
         for location in q:
             _href_location = location.get_attribute("href")
-            csvWriter.writerow(
-                [_href_location,elem_name])
+            if _href_location not in myset:
+                myset.add(_href_location)
+                csvWriter.writerow(
+                    [_href_location,elem_name])
         try:
             if (elem_name=="Природа и парки"):
                 driver.find_element("xpath","//body/div[1]/main/span/div/div[3]/div/div[2]/div[2]/span/div/div[3]/div/div[2]/div/div/section[41]/span/div/div[2]/div/div[3]/div/span/button")
@@ -155,8 +158,10 @@ for i in range(1,100):
         q = driver.find_elements("xpath", '//div/span/div/article/div[2]/header/div/div/a[1]')
         for location in q:
             _href_location = location.get_attribute("href")
-            csvWriter.writerow(
-                [_href_location,elem_name])
+            if _href_location not in myset:
+                myset.add(_href_location)
+                csvWriter.writerow(
+                    [_href_location,elem_name])
         try:
             driver.find_element("xpath",
                                 "//span/div/div[3]/div/div[2]/div[2]/span/div/div[3]/div/div[2]/div/div/section[40]/span/div[1]/div/div[1]/div[2]/div").click()
@@ -191,8 +196,10 @@ for i in range(0, 1000):
     q = driver.find_elements("xpath", '//div/div[1]/div[2]/div[1]/div/div/a[1]')
     for location in q:
         _href_location = location.get_attribute("href")
-        with open('hotel_source.csv', 'a') as the_file:
-            the_file.write(_href_location+"\n")
+        if _href_location not in myset:
+            myset.add(_href_location)
+            with open('hotel_source.csv', 'a') as the_file:
+                the_file.write(_href_location+"\n")
     try:
         time.sleep(2)
         try:
