@@ -14,7 +14,7 @@ num_page = 10
 #sleep_time=2
 
 def sleep_time():
-    delay=randrange(2, 5)
+    delay=randrange(5, 10)
     return delay
 
 def ScrapUserEmblems(url,proxy_login,proxy_password,proxy):

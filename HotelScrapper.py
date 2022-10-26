@@ -17,8 +17,8 @@ num_page = 1000
 
 
 def sleep_time():
-    delay=randrange(2, 5)
-    return delay
+    delay=randrange(15,20)
+    return int(delay)
 
 def ScrapHotel(url,driver,proxy_login,proxy_password,proxy):
     #driver = webdriver.Remote("http://127.0.0.1:4444/wd/hub", desired_capabilities=DesiredCapabilities.CHROME)
@@ -27,7 +27,7 @@ def ScrapHotel(url,driver,proxy_login,proxy_password,proxy):
     driver.maximize_window()
     actions = ActionChains(driver)
     driver.get(url)
-    driver.implicitly_wait(sleep_time)
+    driver.implicitly_wait(sleep_time())
     # Open the file to save the review
     csvFile = open(path_to_file, 'a', encoding="utf-8",newline="")
     csvWriter = csv.writer(csvFile)

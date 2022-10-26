@@ -16,8 +16,8 @@ path_to_file = "restaraunt.csv"
 num_page = 100
 
 def sleep_time():
-    delay=randrange(2, 5)
-    return delay
+    delay=randrange(15, 20)
+    return int(delay)
 
 def ScrapRestaraunt(url,driver,proxy_login,proxy_password,proxy):
     # Import the webdriver

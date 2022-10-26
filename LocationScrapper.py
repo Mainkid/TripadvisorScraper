@@ -14,8 +14,8 @@ path_to_file = "location.csv"
 num_page = 100
 
 def sleep_time():
-    delay=randrange(2, 5)
-    return delay
+    delay=randrange(15, 20)
+    return int(delay)
 
 def ScrapLocation(url,type_loc,driver,proxy_login,proxy_password,proxy):
     #driver = webdriver.Remote("http://selenium:4444/wd/hub",desired_capabilities=DesiredCapabilities.CHROME)

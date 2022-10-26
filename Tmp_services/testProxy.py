@@ -83,9 +83,9 @@ def get_chromedriver(proxy_host,proxy_port,proxy_user,proxy_pass,user_agent,use_
     return driver
 
 def main():
-    driver = get_chromedriver('46.8.14.98','1050','nkPMMT','PBAsOwObw5')
+    driver = get_chromedriver('45.86.1.42','1050','nkPMMT','PBAsOwObw5','Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/106.0.0.0 Safari/537.36')
     #driver.get('https://www.google.com/search?q=my+ip+address')
-    driver.get('https://www.tripadvisor.ru/Attraction_Review-g737147-d6490627-Reviews-Hat_Art_Gallery-Barnaul_Altai_Krai_Siberian_District.html')
+    driver.get('https://www.tripadvisor.ru/Attraction_Review-g665310-d4373359-Reviews-Monument_to_Happiness_Monument_Shhas_Spoyu-Tomsk_Tomsk_Oblast_Siberian_District.html')
     time.sleep(100)
 
 if __name__ == '__main__':
