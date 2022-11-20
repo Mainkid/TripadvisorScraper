@@ -85,20 +85,21 @@ length=len(elements)
 counter = 1
 hasSecondNext=False
 for i in range(1,100):
-    time.sleep(3)
+    time.sleep(4)
     try:
-
-        e=driver.find_element("xpath", '//body/div[1]/main/span/div/div[3]/div/div[2]/div[2]/span/div/div[3]/div/div[1]/div[1]/div[2]/div/div[2]/div[1]/span/div/div[2]/div/div/div[2]/button')
+        e=driver.find_element("xpath", "//button[@class='UikNM _G B- _S _T c G_ P0 wSSLS TXrCr']") #Показать больше строка
         if ("больше" in e.text):
             e.click()
     except:
         print("CANT CLICK")
     time.sleep(3)
+
     try:
-        element=driver.find_element("xpath","//div[3]/div/div[2]/div[2]/span/div/div[3]/div/div[1]/div[1]/div[2]/div/div[2]/div[1]/span/div/div[2]/div/div/div[1]/div["+str(i)+"]/a")
+
+        element=driver.find_element("xpath","//div[3]/div/div[2]/div[2]/div[2]/div/div[3]/div/div[1]/div[1]/div[2]/div/div[2]/div[1]/div/div/div[2]/div/div/div[1]/div["+str(i)+"]/a") #Вывод категорий?
     except:
         break
-    elem_name=element.find_element("xpath",".//div[1]").text
+    elem_name=element.find_element("xpath",".//div").text
     time.sleep(3)
     action = ActionChains(driver)
     action.move_to_element(element).click().perform()
@@ -106,7 +107,7 @@ for i in range(1,100):
     time.sleep(3)
     while(True):
 
-        q = driver.find_elements("xpath", '//div/span/div/article/div[2]/header/div/div/a[1]')
+        q = driver.find_elements("xpath", "//div[@class='alPVI eNNhq PgLKC tnGGX']/a[1]")
         for location in q:
             _href_location = location.get_attribute("href")
             if _href_location not in myset:
@@ -117,7 +118,7 @@ for i in range(1,100):
             if (elem_name=="Природа и парки"):
                 driver.find_element("xpath","//body/div[1]/main/span/div/div[3]/div/div[2]/div[2]/span/div/div[3]/div/div[2]/div/div/section[41]/span/div/div[2]/div/div[3]/div/span/button")
             driver.find_element("xpath",
-                                "//span/div/div[3]/div/div[2]/div[2]/span/div/div[3]/div/div[2]/div/div/section[40]/span/div[1]/div/div[1]/div[2]/div").click()
+                                "//html/body/div[1]/main/div[1]/div/div[3]/div/div[2]/div[2]/div[2]/div/div[3]/div/div[2]/div/div/section[40]/div/div[1]/div/div[1]/div[2]/div/a").click()
             time.sleep(5)
             print("Page")
         except:
@@ -144,7 +145,8 @@ for i in range(1,100):
         print("CANT CLICK")
     time.sleep(3)
     try:
-        element=driver.find_element("xpath","//html/body/div[1]/main/span/div/div[3]/div/div[2]/div[2]/span/div/div[3]/div/div[1]/div[1]/div[2]/div/div[1]/div/span/div/div[2]/div/div/div[1]/div["+str(i)+"]/a")
+        element=driver.find_element("xpath","//html/body/div[1]/main/div[1]/div/div[3]/div/div[2]/div[2]/div[2]/div/div[3]/div/div[1]/div[1]/div[2]/div/div[1]/div/div/div/div[2]/div/div/div/div["+str(i)+"]/a")
+        #element=driver.find_element("xpath","//html/body/div[1]/main/span/div/div[3]/div/div[2]/div[2]/span/div/div[3]/div/div[1]/div[1]/div[2]/div/div[1]/div/span/div/div[2]/div/div/div[1]/div["+str(i)+"]/a")
     except:
         break
     elem_name=element.find_element("xpath",".//div[1]").text
@@ -155,7 +157,7 @@ for i in range(1,100):
     time.sleep(3)
     while(True):
 
-        q = driver.find_elements("xpath", '//div/span/div/article/div[2]/header/div/div/a[1]')
+        q = driver.find_elements("xpath", "//div[@class='alPVI eNNhq PgLKC tnGGX']/a[1]")
         for location in q:
             _href_location = location.get_attribute("href")
             if _href_location not in myset:
@@ -164,7 +166,7 @@ for i in range(1,100):
                     [_href_location,elem_name])
         try:
             driver.find_element("xpath",
-                                "//span/div/div[3]/div/div[2]/div[2]/span/div/div[3]/div/div[2]/div/div/section[40]/span/div[1]/div/div[1]/div[2]/div").click()
+                                "//html/body/div[1]/main/div[1]/div/div[3]/div/div[2]/div[2]/div[2]/div/div[3]/div/div[2]/div/div/section[40]/div/div[1]/div/div[1]/div[2]/div/a").click()
             time.sleep(3)
             print("Page")
         except:

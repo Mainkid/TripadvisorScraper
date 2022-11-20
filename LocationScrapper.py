@@ -15,6 +15,7 @@ num_page = 100
 
 def sleep_time():
     delay=randrange(15, 20)
+    return 2
     return int(delay)
 
 def ScrapLocation(url,type_loc,driver,proxy_login,proxy_password,proxy):
@@ -32,46 +33,46 @@ def ScrapLocation(url,type_loc,driver,proxy_login,proxy_password,proxy):
         lambda d: d.find_element("xpath", "//div[1]/main/div[1]/div[2]/div[1]/header/div[3]/div[1]/div/h1"))
 
     location_name = driver.find_element("xpath","//div[1]/main/div[1]/div[2]/div[1]/header/div[3]/div[1]/div/h1").text
-    location_type = driver.find_element("xpath","//div[1]/main/div[1]/div[2]/div[2]/div/div/span/section[1]/div/div/span/div/div[1]/div[3]/div/div/div[1]").text
-    reviews_amount = driver.find_element("xpath", "//span/section[1]/div/div/span/div/div[1]/div[1]/a/div/span/span").text
-    address = driver.find_element("xpath", "//div/div/span/section[4]/div/div/div[2]/div[1]/span/div/div/div/button/span").text
+    location_type = driver.find_element("xpath","//html/body/div[1]/main/div[1]/div[2]/div[2]/div[2]/div/div[1]/section[1]/div/div/div/div/div[1]/div[3]/div/div/div[1]").text
+    reviews_amount = driver.find_element("xpath", "//html/body/div[1]/main/div[1]/div[2]/div[2]/div[2]/div/div[1]/section[1]/div/div/div/div/div[1]/div[1]/a/div/span/span").text
+    address = driver.find_element("xpath", "//html/body/div[1]/main/div[1]/div[2]/div[2]/div[2]/div/div[1]/section[4]/div/div/div[2]/div[1]/div/div/div/div/button/span").text
 
     for i in range(0, num_page):
 
         # expand the review
         time.sleep(sleep_time())
-        container = driver.find_elements("xpath", "//section[7]/div/div/span/section/section/div[1]/div/div[5]/div")
+        container = driver.find_elements("xpath", "//html/body/div[1]/main/div[1]/div[2]/div[2]/div[2]/div/div[1]/section[7]/div/div/div/section/section/div[1]/div/div[5]/div")
         print(len(container)-1)
         for j in range(len(container)-1):
-            title = container[j].find_element("xpath",".//span/div/div[3]").text
+            title = container[j].find_element("xpath",".//div/div/div[3]/a/span").text
             try:
-                container[j].find_element("xpath",".//span/div/div[5]/div[2]/button/span").click()
+                container[j].find_element("xpath",".//div/div/div[5]/div[2]/button/span").click()
             except:
                 pass
-            review = container[j].find_element("xpath", ".//span/div/div[5]/div[1]/div").text.replace("\n", " ")
+            review = container[j].find_element("xpath", ".//div/div/div[5]/div[1]/div").text.replace("\n", " ")
             try:
-                review_date = container[j].find_element("xpath",".//span/div/div[7]/div[1]").text
+                review_date = container[j].find_element("xpath",".//div/div/div[7]/div[1]").text
 
             except:
-                review_date = container[j].find_element("xpath",".//span/div/div[8]/div[1]").text
+                review_date = container[j].find_element("xpath",".//div/div/div[8]/div[1]").text
 
             review_date = review_date.split(" ")
             review_date = review_date[1]+" "+review_date[2]+" "+review_date[3]+" "+review_date[4]
-            rating = container[j].find_element("xpath",".//span/div/div[2]/*[name()='svg']").get_attribute("aria-label")
+            rating = container[j].find_element("xpath",".//div/div/div[2]/*[name()='svg']").get_attribute("aria-label")
             rating=rating[0]
 
 
 
             try:
-                review_likes = container[j].find_element("xpath",".//span/div/div[1]/div[2]/button/span/span").text
+                review_likes = container[j].find_element("xpath",".//div/div/div[1]/div[2]/button/span/span").text
             except:
                 review_likes = 0
 
-            user_nickname=container[j].find_element("xpath",".//span/div/div[1]/div[1]/div[2]/span/a").text
+            user_nickname=container[j].find_element("xpath",".//div/div/div[1]/div[1]/div[2]/span/a").text
             time.sleep(sleep_time())
 
 
-            profile_link =  container[j].find_element("xpath",".//span/div/div[1]/div[1]/div[2]/span/a").get_attribute("href")
+            profile_link =  container[j].find_element("xpath",".//div/div/div[1]/div[1]/div[2]/span/a").get_attribute("href")
             visiting_date=""
             user_data=ScrapUser(profile_link,proxy_login,proxy_password,proxy)
 
